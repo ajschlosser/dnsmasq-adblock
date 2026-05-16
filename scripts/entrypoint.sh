@@ -64,13 +64,30 @@ done
 # lists.
 echo "Downloading blocklists..."
 
+DOWNLOAD_OK=0
+
 for url in "${URLS[@]}"; do
   [[ -z "$url" ]] && continue
 
   echo "Fetching $url"
-  curl -fsSL "$url" >> "$TMP" || echo "Warning: failed to fetch $url" >&2
+  if curl -fsSL "$url" >> "$TMP"; then
+    DOWNLOAD_OK=1
+  else
+    echo "Warning: failed to fetch $url" >&2
+  fi
   echo >> "$TMP"
 done
+
+if [[ "$DOWNLOAD_OK" -eq 0 ]]; then
+  if [[ -s "$BLOCKLIST" ]]; then
+    echo "Warning: all blocklist downloads failed; reusing existing $BLOCKLIST"
+    echo "Starting dnsmasq..."
+    exec dnsmasq --conf-file=/etc/dnsmasq.conf
+  else
+    echo "ERROR: all blocklist downloads failed and no existing blocklist is available." >&2
+    exit 1
+  fi
+fi
 
 # Convert common hosts-file formats into dnsmasq address rules.
 #
