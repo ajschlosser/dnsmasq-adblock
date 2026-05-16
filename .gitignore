@@ -1,0 +1,5 @@
+# Optional local environment overrides.
+.env.local
+
+# Runtime/debug logs.
+*.log

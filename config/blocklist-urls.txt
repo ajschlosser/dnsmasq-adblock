@@ -1,0 +1,19 @@
+# Blocklist source URLs.
+#
+# You can edit this file.
+#
+# One blocklist URL per line.
+# Blank lines and comments are ignored.
+#
+# After editing:
+#
+#   docker compose restart dnsmasq-adblock
+
+# Default blocklist
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+
+# Additional blocklists for stricter blocking (uncomment as needed)
+# https://adaway.org/hosts.txt
+# https://big.oisd.nl/hosts
+
+# Manually add additional blocklists below this line
