@@ -9,11 +9,7 @@
 #
 #   docker compose restart dnsmasq-adblock
 
-# Default blocklist
+# Default blocklists
 https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-
-# Additional blocklists for stricter blocking (uncomment as needed)
-# https://adaway.org/hosts.txt
-# https://big.oisd.nl/hosts
-
-# Manually add additional blocklists below this line
+https://adaway.org/hosts.txt
+https://big.oisd.nl/hosts

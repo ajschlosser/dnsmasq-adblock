@@ -145,6 +145,14 @@ rm -f "$TMP"
 # Print a rule count. There are two rules per blocked hostname: IPv4 and IPv6.
 echo "Generated $(grep -c '^address=/' "$BLOCKLIST") dnsmasq block rules."
 
+# Add local.conf if one does not already exist
+if [[ ! -f /etc/dnsmasq.d/local.conf ]]; then
+  echo "Creating empty local.conf..."
+  touch /etc/dnsmasq.d/local.conf
+else
+  echo "Using existing local.conf..."
+fi
+
 # Start dnsmasq in the foreground.
 echo "Starting dnsmasq..."
 exec dnsmasq --conf-file=/etc/dnsmasq.conf
