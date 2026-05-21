@@ -11,5 +11,5 @@
 
 # Default blocklists
 https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-https://adaway.org/hosts.txt
-https://big.oisd.nl/hosts
+# https://adaway.org/hosts.txt
+# https://big.oisd.nl/hosts

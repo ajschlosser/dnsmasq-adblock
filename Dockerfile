@@ -2,13 +2,15 @@
 # dnsmasq, curl, bash, CA certificates, and a minimal init process.
 FROM alpine:3.20
 
+
+
 # Install:
 # - dnsmasq: the DNS forwarder/cache used for adblocking
 # - bash: used by scripts/entrypoint.sh
 # - curl: downloads blocklist files
 # - ca-certificates: validates HTTPS blocklist downloads
 # - tini: handles PID 1 / signal forwarding cleanly in Docker
-RUN apk add --no-cache dnsmasq bash curl ca-certificates tini
+RUN apk add --no-cache dnsmasq curl ca-certificates python3
 
 # Create directories used by mounted config and scripts.
 #
@@ -31,4 +33,4 @@ EXPOSE 53/tcp
 # Run the host-mounted entrypoint through tini.
 #
 # The script generates the blocklist and then execs dnsmasq in the foreground.
-ENTRYPOINT ["/sbin/tini", "--", "/scripts/entrypoint.sh"]
+ENTRYPOINT ["python3", "-u", "/scripts/entrypoint.py"]

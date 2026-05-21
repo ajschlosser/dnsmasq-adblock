@@ -17,7 +17,7 @@ services:
       - ./config/dnsmasq.conf:/etc/dnsmasq.conf:ro,Z
       - ./config/upstream.conf:/etc/dnsmasq.d/upstream.conf:ro,Z
       - ./config/local.conf:/etc/dnsmasq.d/local.conf:ro,Z
-      - ./config/blocklist-urls.txt:/etc/dnsmasq-adblock/blocklist-urls.txt:ro,Z
+      - ./config/blocklist-urls.txt:/etc/dnsmasq.d/blocklist-urls.txt:ro,Z
       - ./generated:/generated:Z
       - ./scripts:/scripts:ro,Z
 
