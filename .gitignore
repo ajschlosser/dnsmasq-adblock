@@ -3,3 +3,6 @@
 
 # Runtime/debug logs.
 *.log
+
+# Local configuration overrides.
+config/local.conf
