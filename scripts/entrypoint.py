@@ -3,12 +3,20 @@ import re
 import subprocess
 import sys
 
-blocklist_config_files = ["/etc/dnsmasq.d/blocklist.conf"]
-blocklist_urls_file = ["/etc/dnsmasq.d/blocklist-urls.txt","/dnsmasq.d/blocklist-urls.local.txt"]
+container_mode = os.getenv("CONTAINER_MODE", "1").lower()
+
+dnsmasq_dir = container_mode == "1" and "/etc/dnsmasq.d" or "./config"
+generated_dir = container_mode == "1" and "/generated" or "./generated"
+
+blocklist_config_files = [f"{dnsmasq_dir}/blocklist.conf"]
+blocklist_urls_file = [f"{dnsmasq_dir}/blocklist-urls.txt",f"{dnsmasq_dir}/blocklist-urls.local.txt"]
 blocklist_urls = []
-blocklist_conf = os.getenv("BLOCKLIST_CONF_FILE") or "/generated/blocklist.conf"
+blocklist_conf = os.getenv("BLOCKLIST_CONF_FILE") or f"{generated_dir}/blocklist.conf"
 
 for urls_file in blocklist_urls_file:
+  if not os.path.exists(urls_file):
+    print(f"Blocklist config file {urls_file} not found. Skipping.")
+    continue
   try:
     with open(urls_file, "r") as f:
       print(f"Reading blocklist config from {urls_file}...")
