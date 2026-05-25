@@ -13,13 +13,13 @@ services:
       - "${DNS_BIND_IP}:${DNS_LISTEN_PORT:-53}:53/udp"
       - "${DNS_BIND_IP}:${DNS_LISTEN_PORT:-53}:53/tcp"
 
-    volumes:
+    # volumes:
       # - ./config/dnsmasq.conf:/etc/dnsmasq.conf:rw,Z
-      - ./config/upstream.conf:/etc/dnsmasq.d/upstream.conf:ro,Z
-      - ./config/local.conf:/etc/dnsmasq.d/local.conf:ro,Z
-      - ./config/blocklist-urls.txt:/etc/dnsmasq.d/blocklist-urls.txt:ro,Z
-      - ./generated:/generated:Z
-      - ./scripts:/scripts:ro,Z
+      # - ./config/upstream.conf:/etc/dnsmasq.d/upstream.conf:ro,Z
+      # - ./config/local.conf:/etc/dnsmasq.d/local.conf:ro,Z
+      # - ./config/blocklist-urls.txt:/etc/dnsmasq.d/blocklist-urls.txt:ro,Z
+      # - ./generated:/generated:Z
+      # - ./scripts:/scripts:ro,Z
 
     cap_add:
       - NET_ADMIN

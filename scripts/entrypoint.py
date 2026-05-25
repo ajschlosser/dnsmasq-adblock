@@ -3,15 +3,13 @@ import re
 import subprocess
 import sys
 
-container_mode = os.getenv("CONTAINER_MODE", "1").lower()
-
-dnsmasq_dir = container_mode == "1" and "/etc/dnsmasq.d" or "./config"
-generated_dir = container_mode == "1" and "/generated" or "./generated"
+dnsmasq_dir = "/etc/dnsmasq.d"
+blocklist_data_dir = "/usr/local/share/dnsmasq"
 
 blocklist_config_files = [f"{dnsmasq_dir}/blocklist.conf"]
-blocklist_urls_file = [f"{dnsmasq_dir}/blocklist-urls.txt",f"{dnsmasq_dir}/blocklist-urls.local.txt"]
+blocklist_urls_file = [f"{blocklist_data_dir}/blocklist-urls.txt",f"{blocklist_data_dir}/blocklist-urls.local.txt"]
 blocklist_urls = []
-blocklist_conf = os.getenv("BLOCKLIST_CONF_FILE") or f"{generated_dir}/blocklist.conf"
+blocklist_conf = f"{dnsmasq_dir}/blocklist.conf"
 
 env_vars = ["DNS_BIND_IP", "DNS_CACHE_SIZE", "DNS_LISTEN_PORT"]
 print("Using the following environment variables:")
