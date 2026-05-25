@@ -57,7 +57,7 @@ def download_blocklists(urls):
         print(f"Appended blocklist from {url} to {blocklist_conf}")
     except Exception as e:
       print(f"Error processing blocklist URL {url}: {e}")
-  return count
+  print(f"Total block rules generated: {count:,}")
 
 def remove_file_if_exists(file_path):
   if os.path.exists(file_path):
@@ -71,12 +71,21 @@ def start_process(command):
   except Exception as e:
     print(f"Error starting process {command}: {e}")
 
+def update_dnsmasq_config():
+  try:
+    with open("/etc/dnsmasq.conf", "a") as dnsmasq_conf:
+      dnsmasq_conf.write(f"port={os.getenv('DNS_LISTEN_PORT', 53)}\n")
+      dnsmasq_conf.write(f"cache-size={os.getenv('DNS_CACHE_SIZE', 10000)}\n")
+      print("Updated /etc/dnsmasq.conf with runtime configuration.")
+  except Exception as e:
+    print(f"Error updating /etc/dnsmasq.conf: {e}")
+
 remove_file_if_exists(blocklist_conf)
 
-count = download_blocklists(
+download_blocklists(
   process_blocklist_urls_files(blocklist_urls_files)
 )
 
-print(f"Total block rules generated: {count:,}")
+update_dnsmasq_config()
 
 start_process(["dnsmasq", "--conf-file=/etc/dnsmasq.conf"])
