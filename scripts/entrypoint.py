@@ -70,14 +70,6 @@ for url in blocklist_urls:
 
 print(f"Total block rules generated: {count:,}")
 
-# try:
-#   with open("/etc/dnsmasq.conf", "w") as dnsmasq_conf:
-#     dnsmasq_conf.write(f"port={os.getenv('DNS_LISTEN_PORT', '53')}\n")
-#     dnsmasq_conf.write(f"cache-size={os.getenv('DNS_CACHE_SIZE', '10000')}\n")
-#     print(f"Written dnsmasq configuration to /etc/dnsmasq.conf")
-# except Exception as e:
-#   print(f"Error writing dnsmasq configuration: {e}")
-
 try:
   print("Starting dnsmasq with the generated blocklist...")
   os.execvp("dnsmasq", ["dnsmasq", "--conf-file=/etc/dnsmasq.conf"])

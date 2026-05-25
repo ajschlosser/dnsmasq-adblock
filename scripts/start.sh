@@ -23,15 +23,26 @@ if [ ! -f "../config/local.conf" ]; then
   echo "# Local configuration" > ../config/local.conf
 fi
 
+cd ../
+
 echo "Starting dnsmasq-adblock container..."
 
 if [ "$(docker compose ps -q)" ]; then
-  echo "Container is already running. Restarting..."
-  docker compose restart
-  exit 0
+  echo "Container is already running. Do you want to stop it and restart it? (y/n)"
+  echo "  Note: If you do not have another DNS server running on the host,"
+  echo "  you may lose DNS resolution when stopping the container."
+  read -r response
+  while [ "$response" != "y" ]; do
+    if [ "$response" == "n" ]; then
+      echo "Exiting without restarting the container."
+      exit 0
+    fi
+    echo "Invalid response. Please enter 'y' or 'n'."
+    read -r response
+  done
+    docker compose stop
 fi
 
-cd ../
 docker compose \
   --env-file ./.env \
   --env-file ./.env.local \
