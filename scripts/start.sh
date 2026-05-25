@@ -52,7 +52,6 @@ function start_container() {
 }
 
 env_vars=(
-  "CONTAINER_MODE"
   "DNS_BIND_IP"
   "DNS_CACHE_SIZE"
   "DNS_LISTEN_PORT"
