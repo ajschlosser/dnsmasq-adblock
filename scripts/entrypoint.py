@@ -73,9 +73,16 @@ def start_process(command):
 
 def update_dnsmasq_config():
   try:
-    with open("/etc/dnsmasq.conf", "a") as dnsmasq_conf:
-      dnsmasq_conf.write(f"port={os.getenv('DNS_LISTEN_PORT', 53)}\n")
-      dnsmasq_conf.write(f"cache-size={os.getenv('DNS_CACHE_SIZE', 10000)}\n")
+    with open("/etc/dnsmasq.conf", "r+") as dnsmasq_conf:
+      content = dnsmasq_conf.read()
+      if not content.find("port=") >= 0:
+        dnsmasq_conf.write(f"\nport={os.getenv('DNS_LISTEN_PORT', 53)}\n")
+      else:
+        print("DNS listen port already configured in /etc/dnsmasq.conf. Skipping port configuration.")
+      if not content.find("cache-size=") >= 0:
+        dnsmasq_conf.write(f"cache-size={os.getenv('DNS_CACHE_SIZE', 10000)}\n")
+      else:
+        print("DNS cache size already configured in /etc/dnsmasq.conf. Skipping cache size configuration.")
       print("Updated /etc/dnsmasq.conf with runtime configuration.")
   except Exception as e:
     print(f"Error updating /etc/dnsmasq.conf: {e}")

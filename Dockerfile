@@ -30,12 +30,9 @@ RUN mkdir -p \
 EXPOSE ${DNS_LISTEN_PORT}/udp
 EXPOSE ${DNS_LISTEN_PORT}/tcp
 
-# COPY config/dnsmasq.conf /etc/dnsmasq.conf
-# COPY config/upstream.conf /etc/dnsmasq.d/upstream.conf
-COPY config/*.conf /etc/dnsmasq.d/
+COPY config/[^dnsmasq]*.conf /etc/dnsmasq.d/
+COPY config/dnsmasq.conf /etc/dnsmasq.conf
 COPY data/*.txt /usr/local/share/dnsmasq/
-# COPY config/blocklist-urls.local.txt /usr/local/share/dnsmasq/blocklist-urls.local.txt
-# COPY config/blocklist-urls.txt /usr/local/share/dnsmasq/blocklist-urls.txt
 COPY scripts/*.py /usr/local/bin/dnsmasq/
 
 # Run the host-mounted entrypoint through tini.

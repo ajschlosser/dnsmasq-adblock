@@ -124,7 +124,9 @@ if [ "$(docker compose ps -q)" ]; then
   echo "Container is already running. Do you want to stop it and restart it? (y/n)"
   echo "  Note: If you do not have another DNS server running on the host,"
   echo "  you may lose DNS resolution when stopping the container."
-  get_yn_response
+  if [ ! $RESTART_CONTAINER = true ]; then
+    get_yn_response
+  fi
   docker compose stop
 fi
 
