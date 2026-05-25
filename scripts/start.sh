@@ -4,24 +4,68 @@ set -e
 
 source ./.env
 
-if [ -f "./.env.local" ]; then
-  echo "Loading environment variables from .env.local..."
-  source ./.env.local
-fi
+function get_yn_response() {
+  read -p "(y/n) " response
+  while [ "$response" != "y" ]; do
+    if [ "$response" == "n" ]; then
+      echo "Exiting without restarting the container."
+      exit 0
+    fi
+    echo "Invalid response. Please enter 'y' or 'n'."
+    read -p "(y/n) " response
+  done
+  echo $response
+}
 
-echo "Using the following configuration:"
-echo "  CONTAINER_MODE: ${CONTAINER_MODE}"
-echo "  DNS_BIND_IP: ${DNS_BIND_IP}"
-echo "  DNS_CACHE_SIZE: ${DNS_CACHE_SIZE}"
-echo "  DNS_LISTEN_PORT: ${DNS_LISTEN_PORT}"
+function source_env_file() {
+  local env_file="$1"
+  if [ -f "$env_file" ]; then
+    echo "Loading environment variables from $env_file..."
+    source "$env_file"
+  else
+    echo "Warning: $env_file not found. Skipping."
+  fi
+}
+
+function print_env_vars() {
+  local vars=("$@")
+  echo "Using the following configuration:"
+  for var in "${vars[@]}"; do
+    echo "  $var: ${!var}"
+  done
+}
+
+function check_local_files() {
+  local files=("$@")
+  for file in "${files[@]}"; do
+    if [ ! -f "$file" ]; then
+      echo "Warning: $file not found. You may want to create it to customize your configuration."
+    fi
+  done
+}
+
+function start_container() {
+  docker compose \
+    --env-file ./.env \
+    --env-file ./.env.local \
+    up -d --build --force-recreate
+}
+
+env_vars=(
+  "CONTAINER_MODE"
+  "DNS_BIND_IP"
+  "DNS_CACHE_SIZE"
+  "DNS_LISTEN_PORT"
+)
+
+print_env_vars "${env_vars[@]}"
+
+source_env_file "./.env.local"
 
 SCRIPT_DIR=$(dirname "$0")
 cd "$SCRIPT_DIR"
 
-if [ ! -f "../config/local.conf" ]; then
-  echo "No local.conf found. Creating a default one with bind-interfaces enabled."
-  echo "# Local configuration" > ../config/local.conf
-fi
+check_local_files "../config/local.conf" "../data/blocklist-urls.local.txt"
 
 cd ../
 
@@ -31,19 +75,8 @@ if [ "$(docker compose ps -q)" ]; then
   echo "Container is already running. Do you want to stop it and restart it? (y/n)"
   echo "  Note: If you do not have another DNS server running on the host,"
   echo "  you may lose DNS resolution when stopping the container."
-  read -r response
-  while [ "$response" != "y" ]; do
-    if [ "$response" == "n" ]; then
-      echo "Exiting without restarting the container."
-      exit 0
-    fi
-    echo "Invalid response. Please enter 'y' or 'n'."
-    read -r response
-  done
-    docker compose stop
+  get_yn_response
+  docker compose stop
 fi
 
-docker compose \
-  --env-file ./.env \
-  --env-file ./.env.local \
-  up -d --build --force-recreate
+start_container
