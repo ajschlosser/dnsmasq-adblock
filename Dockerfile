@@ -2,7 +2,13 @@
 # dnsmasq, curl, bash, CA certificates, and a minimal init process.
 FROM alpine:3.20
 
+ARG DNS_BIND_IP
+ARG DNS_CACHE_SIZE
+ARG DNS_LISTEN_PORT
 
+ENV DNS_BIND_IP $DNS_BIND_IP
+ENV DNS_CACHE_SIZE $DNS_CACHE_SIZE
+ENV DNS_LISTEN_PORT $DNS_LISTEN_PORT
 
 # Install:
 # - dnsmasq: the DNS forwarder/cache used for adblocking
@@ -27,8 +33,10 @@ RUN mkdir -p /etc/dnsmasq.d /etc/dnsmasq-adblock /scripts
 # DNS uses both UDP and TCP on port 53.
 # UDP is used for most DNS queries; TCP is used for large responses,
 # retries, zone transfers, and standards-compliant fallback behavior.
-EXPOSE 53/udp
-EXPOSE 53/tcp
+EXPOSE ${DNS_LISTEN_PORT}/udp
+EXPOSE ${DNS_LISTEN_PORT}/tcp
+
+COPY config/dnsmasq.conf /etc/dnsmasq.conf
 
 # Run the host-mounted entrypoint through tini.
 #

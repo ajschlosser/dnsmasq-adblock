@@ -13,6 +13,13 @@ blocklist_urls_file = [f"{dnsmasq_dir}/blocklist-urls.txt",f"{dnsmasq_dir}/block
 blocklist_urls = []
 blocklist_conf = os.getenv("BLOCKLIST_CONF_FILE") or f"{generated_dir}/blocklist.conf"
 
+env_vars = ["DNS_BIND_IP", "DNS_CACHE_SIZE", "DNS_LISTEN_PORT"]
+print("Using the following environment variables:")
+for var in env_vars:
+  if os.getenv(var) is None:
+    print(f"Warning: Environment variable {var} is not set. Using default value.")
+  print(f"  - {var}: {os.getenv(var)}")
+
 for urls_file in blocklist_urls_file:
   if not os.path.exists(urls_file):
     print(f"Blocklist config file {urls_file} not found. Skipping.")
@@ -64,6 +71,14 @@ for url in blocklist_urls:
     print(f"Error processing blocklist URL {url}: {e}")
 
 print(f"Total block rules generated: {count:,}")
+
+# try:
+#   with open("/etc/dnsmasq.conf", "w") as dnsmasq_conf:
+#     dnsmasq_conf.write(f"port={os.getenv('DNS_LISTEN_PORT', '53')}\n")
+#     dnsmasq_conf.write(f"cache-size={os.getenv('DNS_CACHE_SIZE', '10000')}\n")
+#     print(f"Written dnsmasq configuration to /etc/dnsmasq.conf")
+# except Exception as e:
+#   print(f"Error writing dnsmasq configuration: {e}")
 
 try:
   print("Starting dnsmasq with the generated blocklist...")

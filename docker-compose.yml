@@ -1,20 +1,20 @@
 services:
   dnsmasq-adblock:
-    build: .
+    build:
+      context: .
+      args:
+        - DNS_BIND_IP=${DNS_BIND_IP}
+        - DNS_CACHE_SIZE=${DNS_CACHE_SIZE}
+        - DNS_LISTEN_PORT=${DNS_LISTEN_PORT}
     image: dnsmasq-adblock:latest
     container_name: dnsmasq-adblock
-    restart: unless-stopped
-
-    dns:
-      - 1.1.1.1
-      - 9.9.9.9
 
     ports:
-      - "${DNS_BIND_IP}:53:53/udp"
-      - "${DNS_BIND_IP}:53:53/tcp"
+      - "${DNS_BIND_IP}:${DNS_LISTEN_PORT:-53}:53/udp"
+      - "${DNS_BIND_IP}:${DNS_LISTEN_PORT:-53}:53/tcp"
 
     volumes:
-      - ./config/dnsmasq.conf:/etc/dnsmasq.conf:ro,Z
+      # - ./config/dnsmasq.conf:/etc/dnsmasq.conf:rw,Z
       - ./config/upstream.conf:/etc/dnsmasq.d/upstream.conf:ro,Z
       - ./config/local.conf:/etc/dnsmasq.d/local.conf:ro,Z
       - ./config/blocklist-urls.txt:/etc/dnsmasq.d/blocklist-urls.txt:ro,Z
