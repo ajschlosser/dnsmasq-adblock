@@ -1,5 +1,6 @@
 services:
   dnsmasq-adblock:
+    restart: unless-stopped
     build:
       context: .
       args:
@@ -8,10 +9,8 @@ services:
         - DNS_LISTEN_PORT=${DNS_LISTEN_PORT}
     image: dnsmasq-adblock:latest
     container_name: dnsmasq-adblock
-
     ports:
       - "${DNS_BIND_IP}:${DNS_LISTEN_PORT:-53}:53/udp"
       - "${DNS_BIND_IP}:${DNS_LISTEN_PORT:-53}:53/tcp"
-
     cap_add:
       - NET_ADMIN
