@@ -8,4 +8,4 @@
 config/local.conf
 
 # Generated blocklist configuration.
-generated/blocklist.conf
+config/blocklist.conf
