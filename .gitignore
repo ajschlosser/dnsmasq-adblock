@@ -9,3 +9,6 @@ config/local.conf
 
 # Generated blocklist configuration.
 config/blocklist.conf
+
+# Container data
+data/container/

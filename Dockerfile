@@ -20,7 +20,6 @@ RUN apk add --no-cache dnsmasq curl ca-certificates python3
 
 RUN mkdir -p \
     /etc/dnsmasq.d \
-    /etc/dnsmasq-adblock \
     /usr/local/bin/dnsmasq \
     /usr/local/share/dnsmasq
 
