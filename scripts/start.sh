@@ -82,7 +82,8 @@ function check_local_files() {
   local files=("$@")
   for file in "${files[@]}"; do
     if [ ! -f "$file" ]; then
-      echo "Warning: $file not found. You may want to create it to customize your configuration."
+      echo "Warning: $file not found. Creating it now."
+      touch "$file"
     fi
   done
 }
