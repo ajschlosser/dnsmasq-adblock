@@ -25,13 +25,13 @@ if [[ "$CI" = "true" ]]; then
         echo "Test failed: dnsmasq is not running in the container."
         exit 1
     fi
-    exit 0
+    #exit 0
 fi
 
-set -a
-source ./.env
-source ./.env.local
-set +a
+# set -a
+# source ./.env
+# source ./.env.local
+# set +a
 
 echo "Running in local environment, testing DNS resolution for blocked domains."
 
