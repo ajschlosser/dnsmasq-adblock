@@ -5,6 +5,9 @@ source ./.env
 touch ./.env.local
 source ./.env.local
 
+DNS_BIND_IP=$(ip addr show ${DNS_BIND_INTERFACE} | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+echo "Testing DNS resolution through ${DNS_BIND_IP}..."
+
 bash ./scripts/start.sh -dr
 
 # Wait a moment for the container to initialize.
