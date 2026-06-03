@@ -2,8 +2,6 @@
 
 set -e
 
-source ./.env
-
 # process command line options
 function process_opts() {
   while getopts "hbdflr" opt; do
@@ -62,7 +60,9 @@ function source_env_file() {
   local env_file="$1"
   if [ -f "$env_file" ]; then
     echo "Loading environment variables from $env_file..."
+    set -a
     source "$env_file"
+    set +a
   else
     echo "Warning: $env_file not found. Skipping."
   fi
@@ -107,6 +107,7 @@ env_vars=(
 
 process_opts "$@"
 
+source_env_file "./.env"
 source_env_file "./.env.local"
 
 print_env_vars "${env_vars[@]}"
