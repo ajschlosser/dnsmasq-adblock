@@ -16,6 +16,9 @@ sleep 5
 export CI=true
 
 if [[ "$CI" == "true" ]]; then
+
+    export DNS_BIND_IP="127.0.0.1"
+
     echo "Running in CI environment, checking to see if dnsmasq is running in container."
     RESULT=$(docker compose exec dnsmasq-adblock pgrep dnsmasq)
 
