@@ -11,6 +11,10 @@ jobs:
     name: test dnsmasq-adblock
     runs-on: ubuntu-22.04
     steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - name: make test script executable
+        run: chmod +x ./scripts/test.sh
       - name: run test script
         run: |
           bash ./scripts/test.sh
