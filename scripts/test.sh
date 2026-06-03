@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+source ./scripts/utils.sh
+
+check_local_files "./.env" "./.env.local" "./.env.ci"
+
 export CI="${CI:-false}"
 sudo CI=$CI bash ./scripts/start.sh -dr
 
@@ -29,13 +33,13 @@ if [[ "$CI" = "true" ]]; then
 fi
 
 set -a
-source ./.env
-#source ./.env.local
+    source_env_file "./.env"
+    source_env_file "./.env.local"
 set +a
 
 if [[ "$CI" = "true" ]]; then
     set -a
-    source ./.env.ci
+    source_env_file "./.env.ci"
     set +a
 fi
 

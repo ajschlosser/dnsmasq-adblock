@@ -2,6 +2,8 @@
 
 set -e
 
+source ./scripts/utils.sh
+
 # process command line options
 function process_opts() {
   while getopts "hbdflr" opt; do
@@ -53,28 +55,6 @@ function get_yn_response() {
     read -p "(y/n) " response
   done
   echo $response
-}
-
-# Source environment variables from a file if it exists
-function source_env_file() {
-  local env_file="$1"
-  if [ -f "$env_file" ]; then
-    echo "Loading environment variables from $env_file..."
-    set -a
-    source "$env_file"
-    set +a
-  else
-    echo "Warning: $env_file not found. Skipping."
-  fi
-}
-
-# Print the values of specified environment variables
-function print_env_vars() {
-  local vars=("$@")
-  echo "Using the following configuration:"
-  for var in "${vars[@]}"; do
-    echo "  $var: ${!var}"
-  done
 }
 
 # Check if specified local files exist and print a warning if they don't
