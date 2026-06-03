@@ -14,10 +14,8 @@ jobs:
     steps:
       - name: Checkout dnsmasq-adblock repository
         uses: actions/checkout@v4
-      - name: make test script executable
+      - name: Make test script executable
         run: chmod +x ./scripts/test.sh
-      - name: check Docker Compose version
-        run: docker compose version
-      - name: Run ./scripts/test.sh
+      - name: Run test script
         run: |
           bash ./scripts/test.sh
