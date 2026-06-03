@@ -8,13 +8,13 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    name: test dnsmasq-adblock
+    name: Test dnsmasq-adblock
     runs-on: ubuntu-22.04
     steps:
-      - name: checkout code
+      - name: Checkout dnsmasq-adblock repository
         uses: actions/checkout@v4
       - name: make test script executable
         run: chmod +x ./scripts/test.sh
-      - name: run test script
+      - name: Run ./scripts/test.sh
         run: |
           bash ./scripts/test.sh

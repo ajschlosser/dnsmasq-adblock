@@ -97,16 +97,20 @@ function start_container() {
   fi
 }
 
+process_opts "$@"
+
+source_env_file "./.env"
+source_env_file "./.env.local"
+
+if [ "$CI" = "true" ]; then
+  source_env_file "./.env.ci"
+fi
+
 env_vars=(
   "DNS_BIND_IP"
   "DNS_CACHE_SIZE"
   "DNS_LISTEN_PORT"
 )
-
-process_opts "$@"
-
-source_env_file "./.env"
-source_env_file "./.env.local"
 
 print_env_vars "${env_vars[@]}"
 
