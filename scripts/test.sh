@@ -5,7 +5,12 @@ export CI="${CI:-false}"
 sudo CI=$CI bash ./scripts/start.sh -dr
 
 # Wait a moment for the container to initialize.
-sleep 5
+WAIT_TIME=5
+if [[ "$CI" = "true" ]]; then
+    WAIT_TIME=15
+fi
+echo "Waiting $WAIT_TIME seconds for the container to initialize..."
+sleep $WAIT_TIME
 
 if [[ "$CI" = "true" ]]; then
 
