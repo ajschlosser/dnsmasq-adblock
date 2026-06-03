@@ -90,8 +90,6 @@ function check_local_files() {
 # Start the container with the specified options
 function start_container() {
   docker compose \
-    --env-file ./.env \
-    --env-file ./.env.local \
     up ${DETACHED_MODE:+-d} ${BUILD_IMAGE:+--build} ${FORCE_RECREATE:+--force-recreate}
   if [ "$TAIL_LOGS" = true ]; then
     echo "Tailing logs from the container..."
