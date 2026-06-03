@@ -2,6 +2,7 @@
 set -e
 
 source ./.env
+touch ./.env.local
 source ./.env.local
 
 bash ./scripts/start.sh -dr
