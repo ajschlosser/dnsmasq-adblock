@@ -16,6 +16,8 @@ jobs:
         uses: actions/checkout@v4
       - name: make test script executable
         run: chmod +x ./scripts/test.sh
+      - name: check Docker Compose version
+        run: docker compose version
       - name: Run ./scripts/test.sh
         run: |
           bash ./scripts/test.sh

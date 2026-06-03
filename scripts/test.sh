@@ -7,10 +7,12 @@ sudo CI=$CI bash ./scripts/start.sh -dr
 # Wait a moment for the container to initialize.
 WAIT_TIME=5
 if [[ "$CI" = "true" ]]; then
-    WAIT_TIME=15
+    WAIT_TIME=8
 fi
 echo "Waiting $WAIT_TIME seconds for the container to initialize..."
 sleep $WAIT_TIME
+
+docker compose logs --tail=20
 
 if [[ "$CI" = "true" ]]; then
 
