@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - develop
   workflow_dispatch:
 jobs:
   test:
@@ -13,8 +14,8 @@ jobs:
     steps:
       - name: Checkout dnsmasq-adblock repository
         uses: actions/checkout@v4
-      - name: make test script executable
+      - name: Make test script executable
         run: chmod +x ./scripts/test.sh
-      - name: Run ./scripts/test.sh
+      - name: Run test script
         run: |
           bash ./scripts/test.sh
