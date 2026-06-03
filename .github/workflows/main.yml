@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  test:
+    name: test dnsmasq-adblock
+    runs-on: ubuntu-22.04
+    steps:
+      - name: run test script
+        run: |
+          bash ./scripts/test.sh
