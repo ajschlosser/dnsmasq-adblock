@@ -22,9 +22,9 @@ docker compose logs --tail=20
 RESULT=$(docker compose exec dnsmasq-adblock pgrep dnsmasq)
 
 if [[ "$RESULT" == "1" ]]; then
-    echo "Test passed: dnsmasq is running in the container."
+    echo "Test passed: dnsmasq is running in the container. OK."
 else
-    echo "Test failed: dnsmasq is not running in the container."
+    echo "Test failed: dnsmasq is not running in the container. OK."
     exit 1
 fi
 
