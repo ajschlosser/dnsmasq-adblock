@@ -1,3 +1,5 @@
+name: dnsmasq-adblock
+
 services:
   dnsmasq-adblock:
     restart: unless-stopped
