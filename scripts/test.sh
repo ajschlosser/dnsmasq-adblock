@@ -28,15 +28,15 @@ if [[ "$CI" = "true" ]]; then
     #exit 0
 fi
 
-touch ./.env.local
-
 set -a
 source ./.env
-source ./.env.local
+#source ./.env.local
 set +a
 
 if [[ "$CI" = "true" ]]; then
+    set -a
     source ./.env.ci
+    set +a
 fi
 
 echo "Running in local environment, testing DNS resolution for blocked domains."
