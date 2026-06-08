@@ -95,4 +95,4 @@ download_blocklists(
 
 update_dnsmasq_config()
 
-start_process(["dnsmasq", "--conf-file=/etc/dnsmasq.conf"])
+start_process(["dnsmasq", "--log-queries", "--conf-file=/etc/dnsmasq.conf"])

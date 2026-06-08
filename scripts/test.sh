@@ -19,12 +19,12 @@ sleep $WAIT_TIME
 
 docker compose logs --tail=20
 
+echo "TEST: dnsmasq is running in the container"
 RESULT=$(docker compose exec dnsmasq-adblock pgrep dnsmasq)
-
 if [[ "$RESULT" == "1" ]]; then
-    echo "Test passed: dnsmasq is running in the container. OK."
+    echo "PASSED: dnsmasq is running in the container. OK."
 else
-    echo "Test failed: dnsmasq is not running in the container. OK."
+    echo "FAILED: dnsmasq is not running in the container. OK."
     exit 1
 fi
 
@@ -39,15 +39,15 @@ if [[ "$CI" = "true" ]]; then
     set +a
 fi
 
+echo "TEST: dnsmasq is blocking known ad domains"
 # Test that the blocklist is working by querying for a known blocked domain.
 RESULT=$(dig @${DNS_BIND_IP} doubleclick.net +short | grep 0.0.0.0)
-
 # Check if the result is non-empty and matches the expected blocked IP address.
 if [[ -n "$RESULT" ]]; then
-    echo "Test passed: doubleclick.net resolved to $RESULT"
+    echo "PASSED: doubleclick.net resolved to $RESULT. OK."
 elif [[ "$RESULT" != "0.0.0.0" ]]; then
-    echo "Test failed: doubleclick.net did not resolve to 0.0.0.0"
+    echo "FAILED: doubleclick.net did not resolve to 0.0.0.0"
     exit 1
 else
-    echo "Test passed: doubleclick.net resolved to 0.0.0.0"
+    echo "PASSED: doubleclick.net resolved to 0.0.0.0. OK."
 fi
